@@ -27,6 +27,7 @@
       </div>
     </div>
     <div v-if="doAnswer">
+      <div class="level">下記の2進数を10進数に表せ</div>
       <div class="level">
         <div class="level-item">
           <p class="title has-text-grey-darker">{{quetion}}</p>
@@ -55,18 +56,46 @@
       </div>
     </div>
     <div v-else>
+      <div class="level">答えは</div>
       <div class="level">
         <p class="title has-text-success" v-if="success">
           <b-icon pack="far" icon="circle" type="is-success" size="is-small"></b-icon>
-          {{quetion}} = {{respond}}
+          {{quetion}} = {{answer}}
         </p>
         <p class="title has-text-danger" v-else>
           <b-icon pack="fas" icon="times" type="is-danger" size="is-small"></b-icon>
-          {{quetion}} ≠ {{respond}}
+          {{quetion}} = {{answer}}
         </p>
       </div>
-
-      <button class="button is-medium is is-fullwidth" @click="nextQuetion">Next</button>
+      <div class="level">
+        <div class="level-item title has-text-grey-darker">
+          <div class="field has-addons is-fullwidth">
+            <div class="control">
+              <input
+                class="input is-medium is-success"
+                type="number"
+                placeholder="Answer"
+                v-model="responded"
+                @keyup.enter="nextQuetion"
+                autofocus
+                v-if="success"
+              >
+              <input
+                class="input is-medium is-danger"
+                type="number"
+                placeholder="Answer"
+                v-model="responded"
+                @keyup.enter="nextQuetion"
+                autofocus
+                v-else
+              >
+            </div>
+            <div class="control">
+              <button class="button is-medium" @click="nextQuetion">次へ</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="level"></div>
     <b-collapse :open="false">
@@ -100,6 +129,7 @@ export default {
       num:'',
       quetion: "3",
       respond: "",
+      responded: "",
       answer: 0,
       doAnswer: "true",
       success: "false",
@@ -132,8 +162,9 @@ export default {
       this.respond = "";
     },
     checkAnswer: function() {
+      this.responded = this.valdNum(this.respond);
       this.doAnswer = false;
-      if (parseInt(this.respond) == this.answer) {
+      if (parseInt(this.responded) == this.answer) {
         this.success = true;
         this.countofanswer = parseInt(this.countofanswer) + 1;
         this.data[this.num].countofanswer =
@@ -176,6 +207,17 @@ export default {
       num = parseInt(num);
       all = parseInt(all);
       return Math.round((num / all) * 1000) / 10;
+    },
+    valdNum:function(num){
+        if(!isNaN(num)){
+          if(parseInt(num) >= 0){
+            return parseInt(num)
+          }else{
+            return parseInt(-1*num)
+          }
+        }else{
+          return parseInt(0)
+        }
     }
   },
   mounted: function() {
