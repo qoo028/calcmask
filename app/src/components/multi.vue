@@ -74,18 +74,18 @@
                 2
                 <sup>{{props.row.num}}</sup>
               </b-table-column>
-              <b-table-column filed="sum" label="値" numeric="true">{{props.row.sum}}</b-table-column>
+              <b-table-column filed="sum" label="値" numeric>{{props.row.sum}}</b-table-column>
               <b-table-column
                 filed="countofanswer"
                 label="正答数"
-                centered="true"
+                centered
               >{{props.row.countofanswer}}</b-table-column>
               <b-table-column
                 filed="countofquetion"
                 label="総数"
-                centered="true"
+                centered
               >{{props.row.countofquetion}}</b-table-column>
-              <b-table-column filed="paranswer" label="正答率" numeric="true">{{props.row.paranswer}}％</b-table-column>
+              <b-table-column filed="paranswer" label="正答率" numeric>{{props.row.paranswer}}％</b-table-column>
             </template>
           </b-table>
       </b-collapse>
