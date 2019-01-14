@@ -1,17 +1,43 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+                <div class="level">
+                <div class="level-item title has-text-grey-darker">
+                    {{title}}
+                </div>
+            </div>
+
+            <div class="level">
+                <div class="level-item title has-text-grey-darker">
+                    <div class="field has-addons">
+                        <p class="control">
+                            <a class="button is-info is-selected">
+                                <span>乗数</span>
+                            </a>
+                        </p>
+                        <p class="control">
+                            <a class="button">
+                                <span>ビット</span>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+    <multi/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import multi from './components/multi.vue'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    multi
+  },
+  data(){
+    return{
+      title:'計算ドリル'
+    }
   }
 }
 </script>
