@@ -48,7 +48,7 @@
                 >
               </div>
               <div class="control">
-                <button class="button is-medium" @click="checkAnswer">return</button>
+                <button class="button is-medium" @click="checkAnswer">回答</button>
               </div>
             </div>
           </div>
