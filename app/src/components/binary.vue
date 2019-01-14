@@ -29,9 +29,7 @@
       <div v-if="doAnswer">
         <div class="level">
           <div class="level-item">
-            <p class="title has-text-grey-darker">
-              2
-              <sup>{{quetion}}</sup> = ？
+            <p class="title has-text-grey-darker">{{quetion}}
             </p>
           </div>
         </div>
@@ -59,8 +57,8 @@
       </div>
       <div v-else>
           <div class="level">
-          <p class="title has-text-success" v-if="success"><b-icon pack="far" icon="circle" type="is-success" size="is-small"></b-icon>  2<sup>{{quetion}}</sup> = {{respond}}</p>
-          <p class="title has-text-danger" v-else><b-icon pack="fas" icon="times" type="is-danger" size="is-small"></b-icon> 2<sup>{{quetion}}</sup> ≠ {{respond}}</p>
+          <p class="title has-text-success" v-if="success"><b-icon pack="far" icon="circle" type="is-success" size="is-small"></b-icon> {{quetion}} = {{respond}}</p>
+          <p class="title has-text-danger" v-else><b-icon pack="fas" icon="times" type="is-danger" size="is-small"></b-icon> {{quetion}} ≠ {{respond}}</p>
         </div>
 
         <button class="button is-medium is is-fullwidth" @click="nextQuetion">Next</button>
@@ -97,8 +95,8 @@ export default {
   name: "multi",
   data() {
     return {
-      quetion: 0,
-      respond: "",
+      quetion: '3',
+      respond: '',
       answer: 0,
       doAnswer: "true",
       success:'false',
@@ -113,25 +111,25 @@ export default {
     init: function() {
       for (let i = 0; i < 11; i++) {
         this.data.push({
-          num: i,
-          sum: 2 ** i,
+          bit: this.createBit(i),
+          sum: this.transBitToNum(this.createBit(i)),
           countofanswer: 0,
           countofquetion: 0,
           paranswer: 0
         });
       }
-      this.initMulti();
+      this.initBinary();
     },
-    initMulti: function() {
+    initBinary: function() {
       const min = Math.ceil(0);
-      const max = Math.floor(11);
-      this.quetion = Math.floor(Math.random() * (max - min)) + min;
-      this.answer = 2 ** this.quetion;
-      this.respond = "";
+      const max = Math.floor(8);
+      this.quetion = this.createBit(Math.floor(Math.random() * (max - min)) + min)
+      this.answer = this.transBitToNum(this.quetion)
+      this.respond = '';
     },
     checkAnswer: function() {
       this.doAnswer = false;
-      if (parseInt(this.respond) === this.answer) {
+      if (parseInt(this.respond) == this.answer) {
         this.success= true
         this.countofanswer = parseInt(this.countofanswer) + 1;
         this.data[this.quetion].countofanswer =
@@ -149,12 +147,26 @@ export default {
       this.calcParAnswer();
     },
     nextQuetion: function() {
-      this.initMulti();
+      this.initBinary();
       this.doAnswer = true;
       this.countofquetion = parseInt(this.countofquetion) + 1;
     },
     calcParAnswer: function() {
       this.paranswer = this.calcPar(this.countofanswer, this.countofquetion);
+    },
+    createBit: function(num){
+      let result = ''
+      for(let i = 0; i<8; i++){
+        if(i < num){
+          result = '' +result +'1'
+        }else{
+          result = '' +result +'0'
+        }
+      }
+      return result
+    },
+    transBitToNum:function(bit){
+      return parseInt(bit,2)
     },
     calcPar: function(num, all) {
       num = parseInt(num);
