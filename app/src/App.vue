@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <div class="level">
-      <div class="level-item title has-text-grey-darker">{{title}}</div>
+    <div class="navbar">
+      <div class="title has-text-grey-darker">{{title}}</div>
     </div>
        <b-tabs position="is-centered" class="block">
             <b-tab-item label="乗数"><multi /></b-tab-item>
@@ -42,6 +42,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 10px;
 }
 </style>

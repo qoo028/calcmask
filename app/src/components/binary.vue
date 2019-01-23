@@ -27,14 +27,16 @@
       </div>
     </div>
     <div v-if="doAnswer">
-      <div class="level">下記の2進数を10進数に表せ</div>
+      <div class="level">
+        <div class="level-item">下記の2進数を10進数に表せ</div>
+      </div>
       <div class="level">
         <div class="level-item">
           <p class="title has-text-grey-darker">{{quetion}}</p>
         </div>
       </div>
       <div class="level">
-        <div class="level">
+        <div class="level is-hidden-mobile">
           <div class="level-item title has-text-grey-darker">
             <div class="field has-addons is-fullwidth">
               <div class="control">
@@ -59,17 +61,17 @@
       <div class="level">答えは</div>
       <div class="level">
         <p class="title has-text-success" v-if="success">
-          <b-icon pack="far" icon="circle" type="is-success" size="is-small"></b-icon>
+          
           {{quetion}} = {{answer}}
         </p>
         <p class="title has-text-danger" v-else>
-          <b-icon pack="fas" icon="times" type="is-danger" size="is-small"></b-icon>
+          
           {{quetion}} = {{answer}}
         </p>
       </div>
       <div class="level">
         <div class="level-item title has-text-grey-darker">
-          <div class="field has-addons is-fullwidth">
+          <div class="field has-addons is-fullwidth is-hidden-mobile">
             <div class="control">
               <input
                 class="input is-medium is-success"
@@ -97,23 +99,17 @@
         </div>
       </div>
     </div>
-    <div class="level"></div>
+    <div class="section is-hidden-tablet">
+      <keypad v-on:send="nextPage" :input="respond"/>
+    </div>
     <b-collapse :open="false">
       <button class="button is-fullwidth is-white" slot="trigger">詳細</button>
-      <b-table :data="data" :narrowed=true :mobile-cards=false>
+      <b-table :data="data" :narrowed="true" :mobile-cards="false">
         <template slot-scope="props">
-          <b-table-column filed="bit" label="ビット" centered >{{props.row.bit}}</b-table-column>
+          <b-table-column filed="bit" label="ビット" centered>{{props.row.bit}}</b-table-column>
           <b-table-column filed="sum" label="値" numeric>{{props.row.sum}}</b-table-column>
-          <b-table-column
-            filed="countofanswer"
-            label="正答数"
-            centered
-          >{{props.row.countofanswer}}</b-table-column>
-          <b-table-column
-            filed="countofquetion"
-            label="総数"
-            centered
-          >{{props.row.countofquetion}}</b-table-column>
+          <b-table-column filed="countofanswer" label="正答数" centered>{{props.row.countofanswer}}</b-table-column>
+          <b-table-column filed="countofquetion" label="総数" centered>{{props.row.countofquetion}}</b-table-column>
           <b-table-column filed="paranswer" label="正答率" numeric>{{props.row.paranswer}}％</b-table-column>
         </template>
       </b-table>
@@ -122,11 +118,13 @@
 </template>
 
 <script>
+import keypad from "./keypad.vue";
 export default {
-  name: "multi",
+  name: "binary",
+  components: { keypad },
   data() {
     return {
-      num:'',
+      num: "",
       quetion: "3",
       respond: "",
       responded: "",
@@ -156,8 +154,8 @@ export default {
     initBinary: function() {
       const min = Math.ceil(0);
       const max = Math.floor(9);
-      this.num = Math.floor(Math.random() * (max - min)) + min
-      this.quetion = this.createBit(this.num)
+      this.num = Math.floor(Math.random() * (max - min)) + min;
+      this.quetion = this.createBit(this.num);
       this.answer = this.transBitToNum(this.quetion);
       this.respond = "";
     },
@@ -186,6 +184,13 @@ export default {
       this.doAnswer = true;
       this.countofquetion = parseInt(this.countofquetion) + 1;
     },
+    nextPage: function() {
+      if (this.doAnswer) {
+        this.checkAnswer();
+      } else {
+        this.nextQuetion();
+      }
+    },
     calcParAnswer: function() {
       this.paranswer = this.calcPar(this.countofanswer, this.countofquetion);
     },
@@ -208,16 +213,16 @@ export default {
       all = parseInt(all);
       return Math.round((num / all) * 1000) / 10;
     },
-    valdNum:function(num){
-        if(!isNaN(num)){
-          if(parseInt(num) >= 0){
-            return parseInt(num)
-          }else{
-            return parseInt(-1*num)
-          }
-        }else{
-          return parseInt(0)
+    valdNum: function(num) {
+      if (!isNaN(num)) {
+        if (parseInt(num) >= 0) {
+          return parseInt(num);
+        } else {
+          return parseInt(-1 * num);
         }
+      } else {
+        return parseInt(0);
+      }
     }
   },
   mounted: function() {

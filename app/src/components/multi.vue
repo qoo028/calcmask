@@ -27,7 +27,7 @@
       </div>
     </div>
     <div v-if="doAnswer">
-      <div class="level">下記の値を計算せよ</div>
+      <div class="level"><div class="level-item">下記の値を計算せよ</div></div>
       <div class="level">
         <div class="level-item">
           <p class="title has-text-grey-darker">
@@ -36,9 +36,9 @@
           </p>
         </div>
       </div>
-      <div class="level">
+      <div class="level is-hidden-mobile">
         <div class="level-item title has-text-grey-darker">
-          <div class="field has-addons is-fullwidth">
+          <div class="field has-addons is-fullwidth " >
             <div class="control">
               <input
                 class="input is-medium"
@@ -72,7 +72,7 @@
       </div>
       <div class="level">
         <div class="level-item title has-text-grey-darker">
-          <div class="field has-addons is-fullwidth">
+          <div class="field has-addons is-fullwidth is-hidden-mobile">
             <div class="control">
               <input
                 class="input is-medium is-success"
@@ -100,8 +100,10 @@
         </div>
       </div>
     </div>
-    <div class="level"></div>
-    <b-collapse :open="false">
+    <div class="section is-hidden-tablet" >
+      <keypad v-on:send="nextPage" :input="respond"  />
+    </div>
+    <b-collapse :open="false" ref="keypad">
       <button class="button is-fullwidth is-white" slot="trigger">詳細</button>
       <b-table :data="data" :narrowed="true" :mobile-cards="false">
         <template slot-scope="props">
@@ -120,8 +122,10 @@
 </template>
 
 <script>
+import keypad from "./keypad.vue";
 export default {
   name: "multi",
+  components: {keypad},
   data() {
     return {
       quetion: 0,
@@ -176,6 +180,13 @@ export default {
         this.data[this.quetion].countofquetion
       );
       this.calcParAnswer();
+    },
+    nextPage: function(){
+      if(this.doAnswer){
+        this.checkAnswer()
+      }else{
+        this.nextQuetion()
+      }
     },
     nextQuetion: function() {
       this.initMulti();
